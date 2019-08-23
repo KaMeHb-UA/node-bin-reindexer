@@ -1,0 +1,3 @@
+[submodule "node-bin"]
+	path = node-bin
+	url = github:KaMeHb-UA/node-bin.git
