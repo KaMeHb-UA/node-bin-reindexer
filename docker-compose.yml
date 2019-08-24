@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+    indexer:
+        image: node:alpine
+        working_dir: /code
+        volumes:
+            - .:/code
+        entrypoint:
+            - /bin/sh
+            - -c
+            - yarn && yarn start
