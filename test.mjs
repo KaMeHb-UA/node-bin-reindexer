@@ -1,6 +1,6 @@
 import require from './require.mjs'
 import getIndex from './nodeIndex.mjs'
-import { readFileSync as read } from 'fs'
+import { readFileSync as read, writeFileSync as write } from 'fs'
 const JSON6 = require('json-6'),
     JSON5 = require('json5');
 
@@ -48,8 +48,15 @@ getIndex().then(idx => {
             }
         }
     });
-    console.log(JSON5.stringify(byPlatforms, {
+    const repos = byPlatforms['@repos'];
+    const opts = {
         space: '    ',
         quote: '"'
-    }))
+    };
+    delete byPlatforms['@repos'];
+    const res = (
+        JSON5.stringify({'@repos': repos}, opts).slice(0, -1) +
+        JSON5.stringify(byPlatforms, opts).replace(/"(\d+)":/g, "$1:").slice(1)
+    ).replace(/\n\n/g, '\n');
+    write('./node-bin/pkgs.json6', res, 'utf-8');
 })
